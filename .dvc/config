@@ -1,0 +1,6 @@
+[core]
+    analytics = false
+    autostage = true
+    remote = s3bucket
+['remote "s3bucket"']
+    url = s3://sagemaker-eu-west-1-366243680492/example-reproducible-analysis
