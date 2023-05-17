@@ -5,6 +5,7 @@
 # PREREQUISITES
 ##################
 dvc pull
+ls
 pip install -r requirements.txt
 
 ##################
