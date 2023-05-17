@@ -27,22 +27,18 @@ dvc push
 # BUILD AND PUSH CONTAINER TO ECR
 ##################
 CONTAINER_FULLNAME="${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ANALYSIS_NAME}:${ANALYSIS_VERSION}"
-
 # If the repository doesn't exist in ECR, create it.
 aws ecr describe-repositories --repository-names "${ANALYSIS_NAME}" > /dev/null 2>&1
 if [[ $? -ne 0 ]]
 then
     aws ecr create-repository --repository-name "${ANALYSIS_NAME}" > /dev/null
 fi
-
 # Get the login command from ECR and execute it directly
 $(aws ecr get-login --region ${AWS_REGION} --no-include-email)
-
 # Build the docker image locally with the image name and then push it to ECR
 echo "===== BUILDING CONTAINER IMAGE ====="
 docker build --no-cache -t ${ANALYSIS_NAME} -f environment/Dockerfile .
 docker tag ${ANALYSIS_NAME} ${CONTAINER_FULLNAME}
-
 echo "===== PUSHING CONTAINER IMAGE TO ECR ====="
 docker push ${CONTAINER_FULLNAME}
 
@@ -58,6 +54,7 @@ python .reproducible_run/job.py \
 
 echo "===== DOWNLOADING RESULTS ====="
 aws s3 cp ${ANALYSIS_BUCKET}/runs/${ANALYSIS_NAME}-${ANALYSIS_VERSION}/results.dvc .
+rm -r results/*
 dvc pull
 echo "===== ANALYSIS EXECUTED SUCCESSFULLY ====="
 
