@@ -5,7 +5,8 @@
 # PREREQUISITES
 ##################
 dvc pull
-#
+
+# delete results from previous run
 rm -r results/*
 
 ##################
