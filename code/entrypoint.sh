@@ -5,8 +5,6 @@
 # PREREQUISITES
 ##################
 dvc pull
-ls
-pip install -r requirements.txt
 
 ##################
 # LAUNCH CONTAINER JOB
@@ -14,7 +12,12 @@ pip install -r requirements.txt
 python code/main.py
 
 ##################
-# ADD RESULTS TO S3
+# ADD RESULTS DATA VERSION TO S3
 ##################
-# dvc add results/
-# dvc push
+dvc add results/
+dvc push
+
+##################
+# ADD RESULTS DVC REFERENCE TO S3
+##################
+aws s3 cp ./results.dvc ${S3_OUTPUT}

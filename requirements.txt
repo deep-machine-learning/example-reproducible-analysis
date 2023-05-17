@@ -2,3 +2,4 @@ dvc
 dvc_s3
 pyyaml
 sagemaker
+sagemaker-training==4.4.5
