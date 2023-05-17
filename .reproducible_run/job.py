@@ -71,9 +71,9 @@ if __name__ == "__main__":
         entry_point=args.entrypoint,
         source_dir=".",
         instance_count=1,
-        # instance_type=config["run"]["instance_type"],
+        instance_type=config["run"]["instance_type"],
         environment={"S3_OUTPUT": f"{args.output_path}/{args.job_name}/"},
-        instance_type="local",
+        # instance_type="local",
         disable_profiler=True,
         output_path=args.output_path,
     )
