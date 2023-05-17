@@ -5,6 +5,7 @@
 # PREREQUISITES
 ##################
 dvc pull
+#
 rm -r results/*
 
 ##################
