@@ -15,6 +15,5 @@ python code/main.py
 ##################
 # ADD RESULTS TO S3
 ##################
-dvc add results/
-dvc push
-
+# dvc add results/
+# dvc push
