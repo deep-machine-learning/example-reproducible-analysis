@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 
 ##################
+# ENABLE ERROR HANDLING
+##################
+set -e
+
+on_error() {
+  echo "===== AN ERROR OCCURRED ====="
+  exit 1
+}
+
+##################
+# CHECK IF RUN SHOULD BE REPRODUCIBLE
+##################
+if [ "$1" = "reproducible" ]; then
+    echo "===== RUN REPRODUCIBLE ANALYSIS ====="
+else
+    echo "===== REPRODUCE ANALYSIS ====="
+fi
+
+##################
 # GET ANALYSIS NAME AND GENERATE ANALYSIS VERSION
 ##################
 # Read the YAML file
@@ -15,13 +34,9 @@ ANALYSIS_BUCKET=s3://sagemaker-${AWS_REGION}-${AWS_ACCOUNT}
 #################
 # VERSIONING DATASET
 #################
+echo "===== VERSIONING DATASET ====="
 dvc add data/
 dvc push
-
-##################
-# LAUNCH CODEBUILD PROJECT
-##################
-# aws codebuild start-build --project-name reproducible-run
 
 ##################
 # BUILD AND PUSH CONTAINER TO ECR
@@ -43,7 +58,7 @@ echo "===== PUSHING CONTAINER IMAGE TO ECR ====="
 docker push ${CONTAINER_FULLNAME}
 
 ##################
-# LAUNCH JOB IN SAGEMAKER
+# LAUNCH ANALYSIS JOB ON AWS
 ##################
 echo "===== RUNNING THE ANALYSIS ON AWS ====="
 python .reproducible_run/job.py \
@@ -52,6 +67,9 @@ python .reproducible_run/job.py \
     --entrypoint code/entrypoint.sh \
     --output_path ${ANALYSIS_BUCKET}/runs
 
+##################
+# DOWNLOAD RESULTS FROM ANALYSIS JOB
+##################
 echo "===== DOWNLOADING RESULTS ====="
 aws s3 cp ${ANALYSIS_BUCKET}/runs/${ANALYSIS_NAME}-${ANALYSIS_VERSION}/results.dvc .
 rm -r results/*
@@ -61,7 +79,11 @@ echo "===== ANALYSIS EXECUTED SUCCESSFULLY ====="
 ##################
 # SAVE ANALYSIS VERSION TO GITHUB REPO
 ##################
-echo "===== SAVING ANALYSIS INTO GITHUB ====="
-git add .
-git commit -m ${ANALYSIS_VERSION}
-git push
+if [ "$1" = "reproducible" ]; then
+    echo "===== SAVING ANALYSIS INTO GITHUB ====="
+    git add .
+    git commit -m ${ANALYSIS_VERSION}
+    git push
+    # sleep 2
+fi
+echo "===== RUN COMPLETE ====="

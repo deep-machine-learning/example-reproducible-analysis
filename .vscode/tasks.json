@@ -2,14 +2,14 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Reproducible Run",
+            "label": "Run",
             "type": "shell",
-            "command": "sh .reproducible_run/run.sh"
+            "command": "sh .reproducible_run/run.sh reproducible"
         },
         {
-            "label": "Simple Run",
+            "label": "Reproduce",
             "type": "shell",
-            "command": "echo Here is a simple run"
+            "command": "sh .reproducible_run/run.sh"
         }
     ]
 }

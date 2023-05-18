@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# This is the master script for the SWU. When you click "Reproducible Run", the code in this file will execute.
+
+# This is the master script for the SWU. 
+# When you click "Reproducible Run" or "Reproduce", the code in this file will execute.
 
 ##################
 # PREREQUISITES
