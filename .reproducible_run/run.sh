@@ -67,14 +67,15 @@ python .reproducible_run/job.py \
     --entrypoint code/entrypoint.sh \
     --output_path ${ANALYSIS_BUCKET}/runs
 
+echo "===== ANALYSIS RAN SUCCESSFULLY ====="
 ##################
 # DOWNLOAD RESULTS FROM ANALYSIS JOB
 ##################
 echo "===== DOWNLOADING RESULTS ====="
-aws s3 cp ${ANALYSIS_BUCKET}/runs/${ANALYSIS_NAME}-${ANALYSIS_VERSION}/results.dvc .
-rm -r results/*
-dvc pull
-echo "===== ANALYSIS EXECUTED SUCCESSFULLY ====="
+# aws s3 cp ${ANALYSIS_BUCKET}/runs/${ANALYSIS_NAME}-${ANALYSIS_VERSION}/results.dvc .
+# rm -r results/*
+# dvc pull
+sleep 3
 
 ##################
 # SAVE ANALYSIS VERSION TO GITHUB REPO
