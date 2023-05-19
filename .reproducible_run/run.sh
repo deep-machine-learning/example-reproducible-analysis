@@ -65,7 +65,7 @@ docker push ${CONTAINER_FULLNAME}
 echo "===== RUNNING THE ANALYSIS ON AWS ====="
 python .reproducible_run/job.py \
     --job_name ${ANALYSIS_NAME}-${ANALYSIS_VERSION} \
-    --container_image 366243680492.dkr.ecr.eu-west-1.amazonaws.com/example-reproducible-analysis:2962da01 \
+    --container_image ${CONTAINER_FULLNAME} \
     --entrypoint code/entrypoint.sh \
     --output_path ${ANALYSIS_BUCKET}/runs
 
